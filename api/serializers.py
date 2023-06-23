@@ -15,3 +15,4 @@ class WinnerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Winner
         fields = '__all__'
+
