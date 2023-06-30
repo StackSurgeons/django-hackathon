@@ -1,20 +1,23 @@
 from django.db import models
+from django.contrib.auth.models import User
+
+class Leaderboard(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    score = models.IntegerField()
+
+
+    
+class Reward(models.Model):
+    name = models.CharField(max_length=100)
+    description = models.TextField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+class ActiveUser(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    last_active = models.DateTimeField()
 
 class Hackathon(models.Model):
     name = models.CharField(max_length=100)
-    description = models.TextField()
-    is_private = models.BooleanField(default=False)
-    start_date = models.DateField()
-    end_date = models.DateField()
-
-
-class Participant(models.Model):
-    username = models.CharField(max_length=55)
-    hackathon = models.ForeignKey(Hackathon, on_delete=models.CASCADE)
-    joined_at = models.DateTimeField(auto_now_add=True)
-
-    
-class Winner(models.Model):
-    hackathon = models.ForeignKey(Hackathon, on_delete=models.CASCADE)
-    team = models.ForeignKey(Participant, on_delete=models.CASCADE)
-    reward_amount = models.DecimalField(max_digits=10, decimal_places=2)
+    start_date = models.DateTimeField()
+    end_date = models.DateTimeField()
+    participants = models.ManyToManyField(User)

@@ -1,31 +1,32 @@
-from rest_framework.decorators import api_view
+from rest_framework import viewsets
+from .models import Leaderboard, Reward, ActiveUser, Hackathon
+from .serializers import (
+    LeaderboardSerializer,
+    RewardSerializer,
+    ActiveUserSerializer,
+    HackathonSerializer
+)
 from rest_framework.response import Response
-from .models import Hackathon, Participant,Winner
-from .serializers import HackathonSerializer, ParticipantSerializer,WinnerSerializer
-from rest_framework.generics import ListAPIView,CreateAPIView,ListCreateAPIView
-from rest_framework.views   import APIView
-
-class HackathonList(ListAPIView):
-    queryset = Hackathon.objects.all()
-    serializer_class = HackathonSerializer
-
-class HackathonCreate(CreateAPIView):
-    queryset = Hackathon.objects.all()
-    serializer_class = HackathonSerializer
-
-class ParticipantList(ListAPIView):
-    queryset = Participant.objects.all()
-    serializer_class = ParticipantSerializer
-
-class ParticipantCreate(CreateAPIView):
-    queryset = Participant.objects.all()
-    serializer_class = ParticipantSerializer
+from rest_framework.views import APIView
 
 
-class WinnersList(ListAPIView):
-    queryset = Winner.objects.all()
-    serializer_class = WinnerSerializer
+class DashboardAPIView(APIView):
+    def get(self, request):
+        leaderboard_data = Leaderboard.objects.all()
+        reward_data = Reward.objects.all()
+        active_user_data = ActiveUser.objects.all()
+        hackathon_data = Hackathon.objects.all()
 
-class WinnersCreate(CreateAPIView):
-    queryset = Winner.objects.all()
-    serializer_class = WinnerSerializer
+        leaderboard_serializer = LeaderboardSerializer(leaderboard_data, many=True)
+        reward_serializer = RewardSerializer(reward_data, many=True)
+        active_user_serializer = ActiveUserSerializer(active_user_data, many=True)
+        hackathon_serializer = HackathonSerializer(hackathon_data, many=True)
+
+        data = {
+            'leaderboard': leaderboard_serializer.data,
+            'rewards': reward_serializer.data,
+            'active_users': active_user_serializer.data,
+            'hackathons': hackathon_serializer.data
+        }
+
+        return Response(data)

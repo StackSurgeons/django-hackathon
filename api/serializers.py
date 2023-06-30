@@ -1,18 +1,22 @@
 from rest_framework import serializers
-from .models import Hackathon, Participant, Winner
+from .models import Leaderboard, Reward, ActiveUser, Hackathon
+
+class LeaderboardSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Leaderboard
+        fields = '__all__'
+
+class RewardSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Reward
+        fields = '__all__'
+
+class ActiveUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ActiveUser
+        fields = '__all__'
 
 class HackathonSerializer(serializers.ModelSerializer):
     class Meta:
         model = Hackathon
         fields = '__all__'
-
-class ParticipantSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Participant
-        fields = '__all__'
-
-class WinnerSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Winner
-        fields = '__all__'
-
