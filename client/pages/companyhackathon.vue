@@ -50,8 +50,8 @@
           <v-card-title> Active Registered Users </v-card-title>
           <v-card-text>
             <v-list>
-              <v-list-item v-for="(user, index) in displayedUsers" :key="index">
-                <v-list-item-content>{{ user.username }}</v-list-item-content>
+              <v-list-item v-for="(user, index) in activeUsers" :key="index">
+                <v-list-item-content>{{ user.user }}</v-list-item-content>
               </v-list-item>
             </v-list>
           </v-card-text>
@@ -70,7 +70,7 @@
         </v-card>
       </v-col>
       <v-col class="text-center" cols="12" sm="3">
-        <v-card class="d-flex flex-column rounded-xl custom-border-dotted">
+        <v-card class="d-flex flex-column rounded-xl custom-border-dotted" >
           <v-card-text>
             <v-list-item-subtitle class="mb-2" style="font-size: 25px">
               Rewards
@@ -81,7 +81,7 @@
             class="d-flex align-center justify-center"
             style="font-size: 35px"
           >
-            $1200
+            {{ getTotalAmount() }}
           </v-card-subtitle>
           <v-card-actions>
             <v-btn outlined color="primary" to="/payrewards">Pay</v-btn>
@@ -138,17 +138,17 @@
                     <v-avatar class="user-avatar">
                       <v-icon>mdi-account</v-icon>
                     </v-avatar>
-                    <v-list-item-title class="mb-2" style="font-size: 20px">{{
+                    <v-list-item-title  style="font-size: 20px">{{
                       hackathon.name
                     }}</v-list-item-title>
                   </v-col>
                   <v-col>
-                    <v-list-item-title class="mb-2">{{
-                      hackathon.id
+                    <v-list-item-title >{{
+                     formatDate( hackathon.end_date)
                     }}</v-list-item-title>
                   </v-col>
                   <v-col>
-                    <v-list-item-title class="mb-2">Active</v-list-item-title>
+                    <v-list-item-title >Active</v-list-item-title>
                   </v-col>
                 </v-list-item-content>
               </v-list-item>
@@ -176,17 +176,12 @@
             @click:row="onRowClick"
           >
             <template v-slot:item.name="{ item }">
-              <span>{{ item.score }}</span>
-            </template>
-            <template v-slot:item.status="{ item }">
-              <span>{{ item.id }}</span>
-            </template>
-            <template v-slot:item.type="{ item }">
               <span>{{ item.user }}</span>
             </template>
-            <template v-slot:item.date="{ item }">
-              <span>{{ item.date }}</span>
+            <template v-slot:item.status="{ item }">
+              <span>{{ item.score }}</span>
             </template>
+           
           </v-data-table>
         </v-card>
       </v-col>
@@ -201,9 +196,9 @@ export default {
     return {
       headers: [
         { text: "Name", value: "name" },
-        { text: "Status", value: "status" },
-        { text: "Type", value: "type" },
-        { text: "Date", value: "date" },
+        { text: "Score", value: "score" },
+        // { text: "Type", value: "type" },
+        // { text: "Date", value: "date" },
       ],
 
       users: [
@@ -232,6 +227,17 @@ export default {
     onRowClick(item) {
       console.log(item);
     },
+    formatDate(timestamp) {
+      const date = new Date(timestamp);
+      return date.toLocaleDateString();
+    },
+    getTotalAmount() {
+    let total = 0;
+    for (const reward of this.rewards) {
+      total += reward.amt;
+    }
+    return total;
+  },
     fetchData() {
       axios
         .get("http://127.0.0.1:8000/api/dashboard")
@@ -304,7 +310,6 @@ img {
   width: 260px;
   border: dotted;
   position: relative;
-  /* top: -31px; */
   border-radius: 2.25rem;
   left: 23px;
 }
