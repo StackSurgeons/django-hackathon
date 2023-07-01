@@ -20,5 +20,8 @@ from rest_framework import urls
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/dashboard/', views.DashboardAPIView.as_view(), name='dashboard-api'),
-    path("scasdc/",include("rest_framework.urls"))
+    path("scasdc/",include("rest_framework.urls")),
+    path('hackathon/',views.hackathonpost.as_view(), name='hackathons'),
+
+
 ]

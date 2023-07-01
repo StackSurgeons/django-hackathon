@@ -28,5 +28,18 @@ class DashboardAPIView(APIView):
             'active_users': active_user_serializer.data,
             'hackathons': hackathon_serializer.data
         }
-
         return Response(data)
+
+class hackathonpost(APIView):
+    def post(self,request):
+        hackathon_data=request.data
+        hackathon_serializer=HackathonSerializer(data=hackathon_data)
+        if hackathon_serializer.is_valid():
+            hackathon_serializer.save()
+            return Response(status=201)
+        else:
+            return Response({'message': 'Invalid data.'}, status=400)
+        
+
+
+        
