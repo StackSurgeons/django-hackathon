@@ -1,0 +1,24 @@
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&display=swap');
+
+
+
+
+
+html { overflow-y: auto !important }
+
+*, .v-application, .v-application .headline {
+    font-family: Rajdhani, 'Segoe UI', sans-serif !important;
+    text-transform: none;
+}
+
+::-webkit-scrollbar {
+    background-color: transparent !important;
+    width: 7px;
+    height: 3px;
+}
+/* ::-webkit-scrollbar-thumb {
+    background-color: #415677 !important;
+} */
+a {
+  text-decoration: none;
+}
