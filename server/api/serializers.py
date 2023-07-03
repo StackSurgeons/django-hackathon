@@ -20,7 +20,9 @@ class ActiveUserSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class HackathonSerializer(serializers.ModelSerializer):
-    participants = serializers.StringRelatedField(many=True)       
+    participants = serializers.StringRelatedField(many=True)      
+    is_active = serializers.ReadOnlyField()
+    is_past = serializers.ReadOnlyField() 
     class Meta:
         model = Hackathon
         fields = '__all__'
