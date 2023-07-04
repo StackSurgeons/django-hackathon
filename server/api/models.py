@@ -23,16 +23,16 @@ class Hackathon(models.Model):
         ('private', 'Private'),
     )
     name = models.CharField(max_length=100)
-    start_date = models.DateTimeField(auto_now_add=True)
+    start_date = models.DateTimeField()
     end_date = models.DateTimeField()
+    visibility = models.CharField(max_length=10, choices=VISIBILITY_CHOICES)
     participants = models.ManyToManyField(User)
-    visibility = models.CharField(max_length=10, choices=VISIBILITY_CHOICES,default="public")
 
     @property
     def is_active(self):
         current_datetime = timezone.now()
         return self.start_date <= current_datetime <= self.end_date
-    
+
     @property
     def is_past(self):
         current_datetime = timezone.now()
