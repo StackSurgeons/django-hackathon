@@ -26,3 +26,8 @@ class HackathonSerializer(serializers.ModelSerializer):
     class Meta:
         model = Hackathon
         fields = '__all__'
+
+class HackathonSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Hackathon
+        fields = ['name', 'start_date', 'end_date', 'visibility']

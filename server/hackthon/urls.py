@@ -21,6 +21,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/dashboard/', views.DashboardAPIView.as_view(), name='dashboard-api'),
     path("scasdc/",include("rest_framework.urls")),
+    path("api/comp/",views.company),
+    path('hackathons/create/', views.HackathonCreateAPIView.as_view(), name='hackathon-create'),
 
 
 ]
