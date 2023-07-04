@@ -70,7 +70,7 @@
         </v-card>
       </v-col>
       <v-col class="text-center" cols="12" sm="3">
-        <v-card class="d-flex flex-column rounded-xl custom-border-dotted" >
+        <v-card class="d-flex flex-column rounded-xl custom-border-dotted">
           <v-card-text>
             <v-list-item-subtitle class="mb-2" style="font-size: 25px">
               Rewards
@@ -138,17 +138,17 @@
                     <v-avatar class="user-avatar">
                       <v-icon>mdi-account</v-icon>
                     </v-avatar>
-                    <v-list-item-title  style="font-size: 20px">{{
+                    <v-list-item-title style="font-size: 20px">{{
                       hackathon.name
                     }}</v-list-item-title>
                   </v-col>
                   <v-col>
-                    <v-list-item-title >{{
-                     formatDate( hackathon.end_date)
+                    <v-list-item-title>{{
+                      formatDate(hackathon.end_date)
                     }}</v-list-item-title>
                   </v-col>
                   <v-col>
-                    <v-list-item-title >Active</v-list-item-title>
+                    <v-list-item-title>Active</v-list-item-title>
                   </v-col>
                 </v-list-item-content>
               </v-list-item>
@@ -181,7 +181,6 @@
             <template v-slot:item.status="{ item }">
               <span>{{ item.score }}</span>
             </template>
-           
           </v-data-table>
         </v-card>
       </v-col>
@@ -232,12 +231,12 @@ export default {
       return date.toLocaleDateString();
     },
     getTotalAmount() {
-    let total = 0;
-    for (const reward of this.rewards) {
-      total += reward.amt;
-    }
-    return total;
-  },
+      let total = 0;
+      for (const reward of this.rewards) {
+        total += reward.amt;
+      }
+      return total;
+    },
     fetchData() {
       axios
         .get("http://127.0.0.1:8000/api/dashboard")
