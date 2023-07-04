@@ -8,7 +8,7 @@ from .serializers import (
 )
 from rest_framework.response import Response
 from rest_framework.views import APIView
-
+from rest_framework. decorators import  api_view
 
 class DashboardAPIView(APIView):
     def get(self, request):
@@ -29,17 +29,5 @@ class DashboardAPIView(APIView):
             'hackathons': hackathon_serializer.data
         }
         return Response(data)
-
-class hackathonpost(APIView):
-    def post(self,request):
-        hackathon_data=request.data
-        hackathon_serializer=HackathonSerializer(data=hackathon_data)
-        if hackathon_serializer.is_valid():
-            hackathon_serializer.save()
-            return Response(status=201)
-        else:
-            return Response({'message': 'Invalid data.'}, status=400)
-        
-
 
         

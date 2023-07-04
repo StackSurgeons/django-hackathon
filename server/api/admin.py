@@ -3,7 +3,7 @@ from . models import *
 
 @admin.register(Hackathon)
 class hackadmin(admin.ModelAdmin):
-    list_display=["id","name",'start_date','end_date',"is_private"]
+    list_display=["id","name",'start_date','end_date',"visibility"]
 
 @admin.register(ActiveUser)
 class activeadmin(admin.ModelAdmin):
