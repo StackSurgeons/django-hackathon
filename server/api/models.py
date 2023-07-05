@@ -1,4 +1,4 @@
-from django.db import models
+from django.db import models,migrations
 from django.contrib.auth.models import User
 from django.utils import timezone
 
@@ -8,10 +8,7 @@ class Leaderboard(models.Model):
 
 
     
-class Reward(models.Model):
-    hackthon_title = models.CharField(max_length=100)
-    amt=models.IntegerField(default=0)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
 
 class ActiveUser(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -23,10 +20,14 @@ class Hackathon(models.Model):
         ('private', 'Private'),
     )
     name = models.CharField(max_length=100)
-    start_date = models.DateTimeField()
+    start_date = models.DateTimeField(auto_now_add=True)
     end_date = models.DateTimeField()
     visibility = models.CharField(max_length=10, choices=VISIBILITY_CHOICES)
-    participants = models.ManyToManyField(User)
+    # participants = models.ManyToManyField(User)
+    description=models.CharField(max_length=200)
+    Reward=models.IntegerField(default=1000)
+    problem_statements=models.TextField()
+    external_links=models.URLField(max_length=50,default="none")
 
     @property
     def is_active(self):
@@ -37,5 +38,15 @@ class Hackathon(models.Model):
     def is_past(self):
         current_datetime = timezone.now()
         return current_datetime > self.end_date
+    
+class Reward(models.Model):
+    hackathon_title = models.OneToOneField(Hackathon, on_delete=models.CASCADE)
+    amt = models.IntegerField(default=0)
+    user = models.ManyToManyField(User)
+
+    
+    class Meta:
+        verbose_name_plural = "Rewards"
+
 
 

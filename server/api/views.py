@@ -4,28 +4,19 @@ from .models import Hackathon,Reward,Leaderboard,ActiveUser
 from .serializers import HackathonSerializer,ActiveUserSerializer,RewardSerializer,ActiveUser,LeaderboardSerializer
 from django.utils import timezone
 from rest_framework.decorators import api_view
-class HackerDashboardAPIView(APIView):
+
+class DashboardAPIView(APIView):
     def get(self, request):
         user = request.user
         active_hackathons = Hackathon.objects.filter(end_date__gte=timezone.now())
         past_hackathons = Hackathon.objects.filter(end_date__lt=timezone.now())
-        leaderboard=Leaderboard.objects.all()
-        reward = Reward.objects.all()
-        activeuser = ActiveUser.objects.all()
-
 
         active_hackathons_serializer = HackathonSerializer(active_hackathons, many=True)
         past_hackathons_serializer = HackathonSerializer(past_hackathons, many=True)
-        leaderboardseria=LeaderboardSerializer(leaderboard,many=True)
-        rewardseria = RewardSerializer(reward,many=True)
-        activeuserseria =ActiveUserSerializer(activeuser,many=True)
+
         data = {
             'active_hackathons': active_hackathons_serializer.data,
             'past_hackathons': past_hackathons_serializer.data,
-            "Leaderbooard":leaderboardseria.data,
-            "Reward":rewardseria.data,
-            "Activeuser":activeuserseria.data
-            
         }
 
         return Response(data)
@@ -50,31 +41,24 @@ class HackerDashboardAPIView(APIView):
         return Response({'success': 'User successfully joined the hackathon.'})
 
 @api_view(["GET"])
-def CompanyDashboardAPIView(request):
+def companydashboard(request):
     user = request.user
     active_hackathons = Hackathon.objects.filter(end_date__gte=timezone.now())
     past_hackathons = Hackathon.objects.filter(end_date__lt=timezone.now())
     leaderboard=Leaderboard.objects.all()
-    reward = Reward.objects.all()
-    activeuser = ActiveUser.objects.all()
-
-
     active_hackathons_serializer = HackathonSerializer(active_hackathons, many=True)
     past_hackathons_serializer = HackathonSerializer(past_hackathons, many=True)
-    leaderboardseria=LeaderboardSerializer(leaderboard,many=True)
-    rewardseria = RewardSerializer(reward,many=True)
-    activeuserseria =ActiveUserSerializer(activeuser,many=True)
+    lebes=LeaderboardSerializer(leaderboard,many=True)
+
     data = {
             'active_hackathons': active_hackathons_serializer.data,
             'past_hackathons': past_hackathons_serializer.data,
-            "Leaderbooard":leaderboardseria.data,
-            "Reward":rewardseria.data,
-            "Activeuser":activeuserseria.data
+            "Leaderbooard":lebes.data
     }
 
     return Response(data)
 
-class HackathonsCreateAPIView(APIView):
+class HackathonCreateAPIView(APIView):
     def post(self, request):
         serializer = HackathonSerializer(data=request.data)
         if serializer.is_valid():

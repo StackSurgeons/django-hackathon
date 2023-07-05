@@ -9,6 +9,8 @@ class LeaderboardSerializer(serializers.ModelSerializer):
 
 class RewardSerializer(serializers.ModelSerializer):
     user = serializers.ReadOnlyField(source='user.username')
+    hackathon_title = serializers.StringRelatedField(source='hackathon_title.name')
+
     class Meta:
         model = Reward
         fields = '__all__'
@@ -20,14 +22,14 @@ class ActiveUserSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class HackathonSerializer(serializers.ModelSerializer):
-    participants = serializers.StringRelatedField(many=True)      
+    # participants = serializers.StringRelatedField(many=True)      
     is_active = serializers.ReadOnlyField()
     is_past = serializers.ReadOnlyField() 
     class Meta:
         model = Hackathon
         fields = '__all__'
 
-class HackathonSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Hackathon
-        fields = ['name', 'start_date', 'end_date', 'visibility']
+# class HackathonSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Hackathon
+#         fields = ['name', 'start_date', 'end_date', 'visibility']
