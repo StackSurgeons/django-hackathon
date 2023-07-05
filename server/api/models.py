@@ -6,10 +6,6 @@ class Leaderboard(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     score = models.IntegerField()
 
-
-    
-
-
 class ActiveUser(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     last_active = models.DateTimeField()

@@ -21,15 +21,12 @@ class ActiveUserSerializer(serializers.ModelSerializer):
         model = ActiveUser
         fields = '__all__'
 
-class HackathonSerializer(serializers.ModelSerializer):
-    # participants = serializers.StringRelatedField(many=True)      
+class HackathonSerializer(serializers.ModelSerializer):   
     is_active = serializers.ReadOnlyField()
     is_past = serializers.ReadOnlyField() 
     class Meta:
         model = Hackathon
         fields = '__all__'
 
-# class HackathonSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Hackathon
-#         fields = ['name', 'start_date', 'end_date', 'visibility']
+class HackathonJoinSerializer(serializers.Serializer):
+    hackathon_id = serializers.IntegerField()

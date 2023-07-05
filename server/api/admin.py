@@ -5,9 +5,6 @@ from . models import *
 class hackadmin(admin.ModelAdmin):
     list_display=["id","name",'start_date','end_date',"visibility","description","Reward","problem_statements","external_links"]
     
-
-
-
 @admin.register(ActiveUser)
 class activeadmin(admin.ModelAdmin):
     list_display=["id","user",'last_active']

@@ -1,63 +1,75 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from .models import Hackathon,Reward,Leaderboard,ActiveUser
-from .serializers import HackathonSerializer,ActiveUserSerializer,RewardSerializer,ActiveUser,LeaderboardSerializer
+from .serializers import HackathonSerializer,ActiveUserSerializer,RewardSerializer,ActiveUser,LeaderboardSerializer,HackathonJoinSerializer
 from django.utils import timezone
 from rest_framework.decorators import api_view
 
-class DashboardAPIView(APIView):
-    def get(self, request):
-        user = request.user
-        active_hackathons = Hackathon.objects.filter(end_date__gte=timezone.now())
-        past_hackathons = Hackathon.objects.filter(end_date__lt=timezone.now())
-
-        active_hackathons_serializer = HackathonSerializer(active_hackathons, many=True)
-        past_hackathons_serializer = HackathonSerializer(past_hackathons, many=True)
-
-        data = {
-            'active_hackathons': active_hackathons_serializer.data,
-            'past_hackathons': past_hackathons_serializer.data,
-        }
-
-        return Response(data)
-
-    def post(self, request):
-        user = request.user
-        hackathon_id = request.data.get('hackathon_id')
-
-        try:
-            hackathon = Hackathon.objects.get(id=hackathon_id)
-        except Hackathon.DoesNotExist:
-            return Response({'error': 'Hackathon does not exist.'}, status=404)
-
-        # Check if the user is already participating in the hackathon
-        if hackathon.participants.filter(id=user.id).exists():
-            return Response({'error': 'User is already participating in the hackathon.'}, status=400)
-
-        # Add the user to the hackathon participants
-        hackathon.participants.add(user)
-        hackathon.save()
-
-        return Response({'success': 'User successfully joined the hackathon.'})
-
 @api_view(["GET"])
-def companydashboard(request):
+def company_dashboard(request):
     user = request.user
     active_hackathons = Hackathon.objects.filter(end_date__gte=timezone.now())
     past_hackathons = Hackathon.objects.filter(end_date__lt=timezone.now())
     leaderboard=Leaderboard.objects.all()
+    reward=Reward.objects.all()
+    activeUser=ActiveUser.objects.all()
+
     active_hackathons_serializer = HackathonSerializer(active_hackathons, many=True)
     past_hackathons_serializer = HackathonSerializer(past_hackathons, many=True)
-    lebes=LeaderboardSerializer(leaderboard,many=True)
+    leaderboardserializer=LeaderboardSerializer(leaderboard,many=True)
+    rewardserializer=RewardSerializer(reward,many=True)
+    activeUserserializer=ActiveUserSerializer(activeUser,many=True)
 
     data = {
             'active_hackathons': active_hackathons_serializer.data,
             'past_hackathons': past_hackathons_serializer.data,
-            "Leaderbooard":lebes.data
+            "Leaderbooard":leaderboardserializer.data,
+            'reward': rewardserializer.data,
+            "active user":activeUserserializer.data
     }
-
     return Response(data)
 
+
+@api_view(["GET"])
+def hacker_dashboard(request):
+    user = request.user
+    active_hackathons = Hackathon.objects.filter(end_date__gte=timezone.now())
+    past_hackathons = Hackathon.objects.filter(end_date__lt=timezone.now())
+    leaderboard=Leaderboard.objects.all()
+    reward=Reward.objects.all()
+    activeUser=ActiveUser.objects.all()
+
+    active_hackathons_serializer = HackathonSerializer(active_hackathons, many=True)
+    past_hackathons_serializer = HackathonSerializer(past_hackathons, many=True)
+    leaderboardserializer=LeaderboardSerializer(leaderboard,many=True)
+    rewardserializer=RewardSerializer(reward,many=True)
+    activeUserserializer=ActiveUserSerializer(activeUser,many=True)
+
+    data = {
+            'active_hackathons': active_hackathons_serializer.data,
+            'past_hackathons': past_hackathons_serializer.data,
+            "Leaderbooard":leaderboardserializer.data,
+            'reward': rewardserializer.data,
+            "active user":activeUserserializer.data
+    }
+    return Response(data)
+
+class HackathonJoinAPIView(APIView):
+    def post(self, request):
+        serializer = HackathonJoinSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        hackathon_id = serializer.validated_data['hackathon_id']
+        user = request.user
+        try:
+            hackathon = Hackathon.objects.get(id=hackathon_id)
+        except Hackathon.DoesNotExist:
+            return Response({'error': 'Hackathon does not exist.'}, status=404)
+        if hackathon.is_past:
+            return Response({'error': 'Hackathon is already in the past.'}, status=400)
+        if hackathon.visibility == 'private' and hackathon.creator != user:
+            return Response({'error': 'This is a private hackathon and you are not the creator.'}, status=403)
+        return Response({'success': 'User successfully joined the hackathon.'})
+    
 class HackathonCreateAPIView(APIView):
     def post(self, request):
         serializer = HackathonSerializer(data=request.data)
