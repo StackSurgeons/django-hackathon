@@ -5,6 +5,9 @@ body.dark-theme {
 body.theme-dark {
     background: #010812 !important;
 }
+.v-picker__body{
+    width: 250px !important;
+  }
 
 .theme--dark.v-application {
     background: #010812 !important
@@ -29,7 +32,7 @@ body.theme-dark {
     width: 100%;
 }
 .v-textarea .v-input__control {
-    height: 100px !important;
+    height: 182px !important;
   }
 .default {
 

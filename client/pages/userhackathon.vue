@@ -64,7 +64,7 @@
             ></v-text-field>
           </v-card-text>
           <v-card-actions>
-            <v-btn color="primary" @click="joinContest">Join</v-btn>
+            <v-btn color="primary" >Join</v-btn>
           </v-card-actions>
         </v-card>
       </v-col>
@@ -88,8 +88,7 @@
     <!-- Active Hackathons Section -->
     <h2 class="text-left mt-5">Active Hackathons</h2>
     <v-col
-      v-for="(hackathon, index) in activeHackathons"
-      :key="index"
+    v-for="hackathon in activeHackathons" :key="hackathon.id"
       cols="12"
       class="hacks-card"
     >
@@ -100,7 +99,7 @@
               <h3>{{ hackathon.name }}</h3>
             </v-col>
             <v-col cols="auto">
-              <p class="hackathon-date">End Date: {{ hackathon.endDate }}</p>
+              <div class="d-flex justify-center"><p class="hackathon-date">End Date: <br> {{formatDate(hackathon.end_date)}}</p></div>
             </v-col>
             <v-col cols="auto">
               <v-btn
@@ -118,8 +117,7 @@
     <!-- Past Hackathons Section -->
     <h2 class="mt-5 text-left">Past Hackathons</h2>
     <v-col
-      v-for="(hackathon, index) in pastHackathons"
-      :key="index"
+    v-for="hackathon in pastHackathons" :key="hackathon.id"
       cols="12"
       class="hacks-card"
     >
@@ -129,8 +127,8 @@
             <v-col cols="auto">
               <h3>{{ hackathon.name }}</h3>
             </v-col>
-            <v-col cols="auto">
-              <p class="hackathon-date">End Date: {{ hackathon.endDate }}</p>
+            <v-col cols="auto" >
+              <p class="hackathon-date">End Date:<br> {{formatDate(hackathon.end_date)}}</p>
             </v-col>
             <v-col cols="auto">
               <v-btn outlined color="primary" disabled> View Results </v-btn>
@@ -143,6 +141,7 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
   data() {
     return {
@@ -151,25 +150,25 @@ export default {
         { id: 2, name: "User 2", registrationDate: new Date("2023-06-26") },
         { id: 3, name: "User 3", registrationDate: new Date("2023-06-24") },
       ],
-      activeHackathons: [
-        { id: 1, name: "Hackathon 1", endDate: "2023-07-15" },
-        { id: 2, name: "Hackathon 2", endDate: "2023-08-20" },
-        { id: 3, name: "Hackathon 3", endDate: "2023-09-10" },
-      ],
-      pastHackathons: [
-        { id: 1, name: "Past Hackathon 1", endDate: "2023-06-15" },
-        { id: 2, name: "Past Hackathon 2", endDate: "2023-07-20" },
-        { id: 3, name: "Past Hackathon 3", endDate: "2023-08-10" },
-      ],
       rewardAmount: 0,
       isClaimPopupVisible: false,
       upiId: "",
+      hackathons: [],
     };
   },
   computed: {
     sortedUsers() {
       return this.users.sort((a, b) => a.registrationDate - b.registrationDate);
     },
+    activeHackathons() {
+      return this.hackathons.filter(hackathon => hackathon.is_active);
+    },
+    pastHackathons() {
+      return this.hackathons.filter(hackathon => hackathon.is_past);
+    }
+  },
+  mounted() {
+    this.fetchData();
   },
   methods: {
     formatDate(date) {
@@ -188,6 +187,19 @@ export default {
     submitClaim() {
       this.isClaimPopupVisible = false;
       this.upiId = ""; // Clearing the UPI ID field
+    },
+    fetchData() {
+      axios
+        .get("http://127.0.0.1:8000/api/dashboard")
+        .then((response) => {
+        
+          this.hackathons = response.data.hackathons;
+         
+          console.log("API Response:", response);
+        })
+        .catch((error) => {
+          console.error("Error fetching data:", error);
+        });
     },
   },
 };
