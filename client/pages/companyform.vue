@@ -1,197 +1,170 @@
 <template>
   <v-container>
-    <div class="publish-hackathon">
-      <v-stepper
-       
-        color="transparent"
-        style="background: transparent !important"
+    <v-toolbar-title>Publish a Hackathon</v-toolbar-title>
+    <v-divider></v-divider>
+    <div class="d-flex">
+      <v-btn text :class="{ highlight: currentPage === 'publish' }">
+        Publish a Hackathon
+      </v-btn>
+      <v-btn
+        text
+        :class="{ highlight: currentPage === 'leaderboard' }"
+        to="/leaderboard"
       >
-        <v-stepper-items>
-          <v-stepper-content step="1" class="pt-2">
-            <form @submit.prevent="submitForm">
-              <v-card>
-                <v-card-title> Publish a Hackathon</v-card-title>
-                <v-card-text>
-                  <v-row>
-                    <v-col cols="12">
-                      <v-card-subtitle class="pa-0">
-                        Name of Hackathon</v-card-subtitle
-                      >
-                    </v-col>
-                    <v-col cols="12">
-                      <v-text-field
-                        v-model="form.name"
-                        label="Name"
-                        outlined
-                      ></v-text-field>
-                    </v-col>
-                    <v-col cols="12">
-                      <v-card-subtitle class="pa-0">
-                        Instruction</v-card-subtitle
-                      >
-                    </v-col>
-                    <v-col cols="12">
-                      <v-text-field
-                        v-model="form.instruction"
-                        placeholder="Extra Instruction"
-                        outlined
-                      />
-                    </v-col>
-
-                    <v-col cols="12" sm="4">
-                      <v-text-field
-                        v-model="form.startDate"
-                        label="Start Date"
-                        required
-                        outlined
-                        placeholder="yyyy/mm/dd "
-                      ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="4">
-                      <v-text-field
-                        v-model="form.endDate"
-                        label="End Date"
-                        required
-                        outlined
-                        placeholder="yyyy/mm/dd "
-                      ></v-text-field>
-                    </v-col>
-
-                    <v-col cols="12" sm="4">
-                      <v-checkbox
-                        v-model="form.private"
-                        label="Private"
-                      ></v-checkbox>
-                    </v-col>
-
-                    <v-col cols="12">
-                      <v-card-subtitle class="pa-0">
-                        Description</v-card-subtitle
-                      >
-                    </v-col>
-                    <v-col cols="12" sm="12">
-                      <v-textarea
-                        v-model="form.description"
-                        placeholder="Enter Contest Description"
-                        auto-grow
-                        outlined
-                        rows="10"
-                      ></v-textarea>
-                    </v-col>
-                    <v-col cols="12">
-                      <v-card-subtitle class="pa-0 mt-5">
-                        Problem Statement
-                      </v-card-subtitle>
-                    </v-col>
-                    <v-col cols="12">
-                      <v-textarea
-                        v-model="form.problemStatement"
-                        placeholder="Enter Problem Statement"
-                        outlined
-                      ></v-textarea>
-                    </v-col>
-                    <v-col cols="12" sm="6">
-                      <v-text-field class="mt-8"
-                        v-model="form.rewards"
-                        label="Rewards"
-                        required
-                        outlined
-                        placeholder="Enter Amount "
-                      ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6">
-                      <v-text-field
-                        v-model="form.links"
-                        label="External Links"
-                        class="mt-8"
-                        outlined
-                      ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" class="text-center">
-                      <v-col cols="12">
-                        <v-btn type="submit" color="primary">Submit</v-btn>
-                      </v-col>
-                    </v-col>
-                  </v-row>
-                </v-card-text>
-              </v-card>
-            </form>
-          </v-stepper-content>
-        </v-stepper-items>
-      </v-stepper>
+        Leaderboard
+      </v-btn>
+      <v-btn
+        text
+        :class="{ highlight: currentPage === 'dashboard' }"
+        to="/companyhackathon"
+      >
+        Dashboard
+      </v-btn>
     </div>
+    <v-layout row class="mt-4">
+      <v-flex xs6>
+        <v-card class="mb-4">
+          <v-card-title class="justify-start">Name Of Hackathon</v-card-title>
+          <v-divider></v-divider>
+          <v-card-text>
+            <v-text-field
+              v-model="hackathonName"
+              label="Hackathon Name"
+              outlined
+            />
+          </v-card-text>
+        </v-card>
+        <v-card class="mb-4">
+          <v-card-title class="justify-start">Rewards</v-card-title>
+          <v-divider></v-divider>
+          <v-card-text>
+            <v-text-field v-model="reward" label="Rewards" outlined
+          /></v-card-text>
+        </v-card>
+      </v-flex>
+      <v-flex xs6>
+        <v-card class="mb-4 ml-4" style="height: 320px">
+          <v-card-title class="justify-start">Description</v-card-title>
+          <v-divider></v-divider>
+          <v-card-text class="mt-8">
+            <v-textarea
+              outlined
+              v-model="hackathonDescription"
+              rows="5"
+              ref="textarea"
+              @input="adjustTextareaHeight"
+            />
+          </v-card-text>
+        </v-card>
+      </v-flex>
+      <v-card class="mb-4" style="width: 100%">
+        <v-card-title class="privacy_title">Privacy</v-card-title>
+        <v-divider></v-divider>
+        <v-card-subtitle class="text-left"
+          >Choose who can access your hackathon</v-card-subtitle
+        >
+        <v-card-text class="justify-end">
+          <v-btn-toggle>
+            <v-btn :value="true">Public</v-btn>
+            <v-btn :value="false">Private</v-btn>
+          </v-btn-toggle>
+        </v-card-text>
+      </v-card>
+      <v-flex xs6>
+        <v-card class="mb-4 mr-4" style="height: 300px">
+          <v-card-title class="justify-start">Problem Statement</v-card-title>
+          <v-divider></v-divider>
+          <v-card-text class="mt-8">
+            <v-textarea
+              outlined
+              v-model="problemStatement"
+              rows="5"
+              ref="textarea"
+              @input="adjustTextareaHeight"
+            />
+          </v-card-text>
+        </v-card>
+        <v-card class="mb-4 mr-4">
+          <v-card-title class="justify-start">External Links</v-card-title>
+          <v-divider></v-divider>
+          <v-card-text>
+            <v-text-field v-model="links" label="Links" outlined
+          /></v-card-text>
+        </v-card>
+        <v-card>
+          <v-card-title class="justify-start">
+            Publish Your Hackathon
+          </v-card-title>
+          <v-divider></v-divider>
+          <v-card-text>
+            <v-btn outlined>Publish</v-btn>
+          </v-card-text>
+        </v-card>
+      </v-flex>
+      <v-flex xs6>
+        <v-card class="mb-4">
+          <v-card-title
+            class="justify-start"
+            
+          >
+            Date
+          </v-card-title>
+          <v-divider></v-divider>
+          <v-card-text >
+            <v-row>
+              <v-col cols="6">
+                <v-date-picker v-model="startDate" label="Start Date" />
+              </v-col>
+              <v-col cols="6">
+                <v-date-picker v-model="endDate" label="End Date" />
+              </v-col>
+            </v-row>
+          </v-card-text>
+        </v-card>
+      </v-flex>
+    </v-layout>
   </v-container>
 </template>
-
 <script>
 export default {
   data() {
     return {
-      // e1: 0,
-      // closed: false,
-      form: {
-        name: "",
-        description: "",
-        private: false,
-        startDate: "",
-        endDate: "",
-        rewards: "",
-        problemStatement: "",
-        links: "",
-      },
+      hackathonName: "",
+      hackathonDescription: "Hackathon Description",
+      startDate: null,
+      endDate: null,
+      problemStatement: "Problem Statement",
+      reward: 1000,
+      links: "",
+      currentPage: "publish",
     };
   },
   methods: {
-    submitForm() {
-      console.log(this.form);
+    adjustRewards(action) {
+      if (action === "up") {
+        this.reward += 100;
+      } else if (action === "down") {
+        this.reward -= 100;
+      }
     },
-    resetForm() {
-      this.form.name = "";
-      this.form.description = "";
-      this.form.private = false;
-      this.form.startDate = "";
-      this.form.endDate = "";
-      this.form.links = "";
-      this.form.rewards = "";
-      this.form.problemStatement = "";
+    adjustTextareaHeight() {
+      this.$nextTick(() => {
+        const textareaHeight = this.$refs.textarea.$el.scrollHeight;
+        this.hackathonDescriptionHeight = `${textareaHeight}px`;
+      });
+    },
+    startHackathon() {
+      // Add logic for starting the hackathon
     },
   },
 };
 </script>
-
 <style scoped>
-.container {
-  display: block !important;
-  text-align: left !important;
+.privacy_title {
+  justify-content: flex-start;
 }
-
-.v-text-field {
-  width: 100%;
-}
-.v-card__title {
-  justify-content: left !important;
-}
-
-.form-container {
-  display: flex;
-  flex-direction: column;
-}
-label {
-  margin-bottom: 5px;
-}
-
-input[type="text"],
-textarea {
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-input[type="checkbox"] {
-  margin-top: 5px;
-}
-
-button:hover {
-  background-color: #0d47a1;
+.highlight {
+  color: #0000cc; /* Dark blue color */
+  font-weight: bold;
 }
 </style>
