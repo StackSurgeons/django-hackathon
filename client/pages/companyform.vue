@@ -121,8 +121,10 @@
             <v-row>
               <v-col cols="6">
                 <v-date-picker v-model="startDate" label="Start Date" />
+                
               </v-col>
               <v-col cols="6">
+                
                 <v-date-picker v-model="endDate" label="End Date" />
               </v-col>
             </v-row>
@@ -134,8 +136,8 @@
 </template>
 <script>
 import axios from "axios";
-import moment from "moment";
-import { format } from 'date-fns';
+// import moment from "moment";
+import { format } from "date-fns";
 export default {
   data() {
     return {
@@ -144,7 +146,7 @@ export default {
       startDate: null,
       endDate: null,
       problemStatement: "",
-      visibility: 'public',
+      visibility: "public",
       reward: 1000,
       links: "",
       currentPage: "publish",
@@ -166,20 +168,23 @@ export default {
     },
     startHackathon() {
       // const formattedStartDate = format(this.startDate, 'yyyy-MM-dd');
-      const formattedEndDate = format(this.endDate, 'yyyy-MM-dd');
+      // const formattedEndDate = format(this.endDate, "yyyy-MM-dd");
       const data = {
         name: this.hackathonName,
-        endDate: formattedEndDate,
+        end_date: this.endDate,
+        start_date: this.startDate,
         visibility: this.visibility,
         description: this.hackathonDescription,
         problem_statements: this.problemStatement,
+        Reward : this.reward,
         // Include other properties as needed
       };
+      console.log(data)
       axios
         .post("http://127.0.0.1:8000/hackathons/create/", data)
         .then((response) => {
           console.log("API Response:", response);
-          this.$router.push('/companyhackathon');
+          this.$router.push("/companyhackathon");
         })
         .catch((error) => {
           console.error("Error posting data:", error);

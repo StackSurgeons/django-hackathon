@@ -19,7 +19,7 @@ from api import views
 from rest_framework import urls
 urlpatterns = [
     path('admin/', admin.site.urls),
-    #path("scasdc/",include("rest_framework.urls")),
+    path("scasdc/",include("rest_framework.urls")),
     path('hackathons/create/', views.HackathonCreateAPIView.as_view(), name='hackathon-create'),
     path("company/dashboard/",views.company_dashboard),
     path("hacker/dashboard/",views.hacker_dashboard),

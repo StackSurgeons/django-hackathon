@@ -16,7 +16,7 @@ class Hackathon(models.Model):
         ('private', 'Private'),
     )
     name = models.CharField(max_length=100)
-    start_date = models.DateField(auto_now_add=True)
+    start_date = models.DateField()
     end_date = models.DateField()
     visibility = models.CharField(max_length=10, choices=VISIBILITY_CHOICES)
     # participants = models.ManyToManyField(User)
