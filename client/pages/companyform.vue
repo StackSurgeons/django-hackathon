@@ -38,8 +38,16 @@
           <v-card-title class="justify-start">Rewards</v-card-title>
           <v-divider></v-divider>
           <v-card-text>
-            <v-text-field v-model="reward" label="Rewards" outlined
-          /></v-card-text>
+            <v-layout align-center>
+              <v-btn @click="decrementReward" icon>
+                <v-icon>mdi-minus</v-icon>
+              </v-btn>
+              <v-text-field v-model="reward" label="Rewards" outlined></v-text-field>
+              <v-btn @click="incrementReward" icon>
+                <v-icon>mdi-plus</v-icon>
+              </v-btn>
+            </v-layout>
+          </v-card-text>
         </v-card>
       </v-flex>
       <v-flex xs6>
@@ -156,6 +164,14 @@ export default {
     startHackathon() {
       // Add logic for starting the hackathon
     },
+    incrementReward() {
+      this.reward++;
+    },
+    decrementReward() {
+      if (this.reward > 0) {
+        this.reward--;
+      }
+    }
   },
 };
 </script>

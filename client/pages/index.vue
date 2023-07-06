@@ -1,10 +1,6 @@
 <template>
-
-
   <div>
-   
     <companyhackathon/>
-   
   </div>
 </template>
 
