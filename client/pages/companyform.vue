@@ -166,10 +166,11 @@ export default {
     },
     startHackathon() {
       // const formattedStartDate = format(this.startDate, 'yyyy-MM-dd');
-      const formattedEndDate = format(this.endDate, 'yyyy-MM-dd');
+      // const formattedEndDate = format(this.endDate, 'yyyy-MM-dd');
       const data = {
         name: this.hackathonName,
-        endDate: formattedEndDate,
+        end_date: this.endDate,
+        start_date: this.startDate,
         visibility: this.visibility,
         description: this.hackathonDescription,
         problem_statements: this.problemStatement,
