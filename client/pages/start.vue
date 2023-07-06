@@ -128,15 +128,16 @@ export default {
       ],
     };
   },
-  method:{
+  mounted() {
+    this.fetchData();
+  },
+  methods: {
     async fetchData() {
       try {
-        const response = await axios.get("");
-        const data = response.data;
-        
-        console.log(data);
+        const response = await axios.get("http://127.0.0.1:8000/company/dashboard/");
+        this.leaderboardEntries = response.data;
+        console.log(response.data)
       } catch (error) {
-        
         console.error(error);
       }
     }
