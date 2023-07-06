@@ -27,13 +27,13 @@ class Hackathon(models.Model):
 
     @property
     def is_active(self):
-        current_datetime = timezone.now()
-        return self.start_date <= current_datetime <= self.end_date
+        current_date = timezone.now().date()
+        return self.start_date <= current_date <= self.end_date
 
     @property
     def is_past(self):
-        current_datetime = timezone.now()
-        return current_datetime > self.end_date
+        current_date = timezone.now().date()
+        return current_date > self.end_date
     
 class Reward(models.Model):
     hackathon_title = models.OneToOneField(Hackathon, on_delete=models.CASCADE)
