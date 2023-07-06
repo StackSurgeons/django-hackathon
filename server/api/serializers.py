@@ -21,9 +21,10 @@ class ActiveUserSerializer(serializers.ModelSerializer):
         model = ActiveUser
         fields = '__all__'
 
-class HackathonSerializer(serializers.ModelSerializer):   
-    is_active = serializers.ReadOnlyField()
-    is_past = serializers.ReadOnlyField() 
+class HackathonSerializer(serializers.ModelSerializer):
+    start_date = serializers.DateField(format='%Y-%m-%d')
+    end_date = serializers.DateField(format='%Y-%m-%d')
+
     class Meta:
         model = Hackathon
         fields = '__all__'
