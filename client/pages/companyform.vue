@@ -42,7 +42,11 @@
               <v-btn @click="decrementReward" icon>
                 <v-icon>mdi-minus</v-icon>
               </v-btn>
-              <v-text-field v-model="reward" label="Rewards" outlined></v-text-field>
+              <v-text-field
+                v-model="reward"
+                label="Rewards"
+                outlined
+              ></v-text-field>
               <v-btn @click="incrementReward" icon>
                 <v-icon>mdi-plus</v-icon>
               </v-btn>
@@ -72,9 +76,9 @@
           >Choose who can access your hackathon</v-card-subtitle
         >
         <v-card-text class="justify-end">
-          <v-btn-toggle>
-            <v-btn :value="true">Public</v-btn>
-            <v-btn :value="false">Private</v-btn>
+          <v-btn-toggle v-model="visibility">
+            <v-btn value="public">Public</v-btn>
+            <v-btn value="private">Private</v-btn>
           </v-btn-toggle>
         </v-card-text>
       </v-card>
@@ -105,20 +109,15 @@
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text>
-            <v-btn outlined>Publish</v-btn>
+            <v-btn outlined @click="startHackathon">Publish</v-btn>
           </v-card-text>
         </v-card>
       </v-flex>
       <v-flex xs6>
         <v-card class="mb-4">
-          <v-card-title
-            class="justify-start"
-            
-          >
-            Date
-          </v-card-title>
+          <v-card-title class="justify-start"> Date </v-card-title>
           <v-divider></v-divider>
-          <v-card-text >
+          <v-card-text>
             <v-row>
               <v-col cols="6">
                 <v-date-picker v-model="startDate" label="Start Date" />
@@ -134,14 +133,18 @@
   </v-container>
 </template>
 <script>
+import axios from "axios";
+import moment from "moment";
+import { format } from 'date-fns';
 export default {
   data() {
     return {
       hackathonName: "",
-      hackathonDescription: "Hackathon Description",
+      hackathonDescription: "",
       startDate: null,
       endDate: null,
-      problemStatement: "Problem Statement",
+      problemStatement: "",
+      visibility: 'public',
       reward: 1000,
       links: "",
       currentPage: "publish",
@@ -162,7 +165,25 @@ export default {
       });
     },
     startHackathon() {
-      // Add logic for starting the hackathon
+      // const formattedStartDate = format(this.startDate, 'yyyy-MM-dd');
+      const formattedEndDate = format(this.endDate, 'yyyy-MM-dd');
+      const data = {
+        name: this.hackathonName,
+        endDate: formattedEndDate,
+        visibility: this.visibility,
+        description: this.hackathonDescription,
+        problem_statements: this.problemStatement,
+        // Include other properties as needed
+      };
+      axios
+        .post("http://127.0.0.1:8000/hackathons/create/", data)
+        .then((response) => {
+          console.log("API Response:", response);
+          this.$router.push('/companyhackathon');
+        })
+        .catch((error) => {
+          console.error("Error posting data:", error);
+        });
     },
     incrementReward() {
       this.reward++;
@@ -171,7 +192,7 @@ export default {
       if (this.reward > 0) {
         this.reward--;
       }
-    }
+    },
   },
 };
 </script>

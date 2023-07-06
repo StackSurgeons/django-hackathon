@@ -47,15 +47,20 @@
             </v-card>
 
             <v-card class="leaderboard-card">
-              <v-card-title>Leaderboard</v-card-title>
-              <v-divider></v-divider>
-              <v-list>
-                <v-list-item v-for="entry in leaderboardEntries" :key="entry.id">
-                  <v-list-item-title>{{ entry.name }}</v-list-item-title>
-                  <v-list-item-subtitle>{{ entry.points }} points</v-list-item-subtitle>
-                </v-list-item>
-              </v-list>
-            </v-card>
+    <v-card-title>Leaderboard</v-card-title>
+    <v-divider></v-divider>
+    <v-list>
+      <v-list-item v-for="entry in leaderboardEntries" :key="entry.id" :class="{ highlighted: entry.highlighted }">
+        <v-list-item-title>{{ entry.name }}</v-list-item-title>
+        <v-list-item-subtitle>{{ entry.points }} points</v-list-item-subtitle>
+        <v-list-item-subtitle>
+          <ul class="members">
+            <li v-for="member in entry.members" :key="member">{{ member }}</li>
+          </ul>
+        </v-list-item-subtitle>
+      </v-list-item>
+    </v-list>
+  </v-card>
           </v-card-text>
         </v-card>
       </v-flex>
@@ -78,11 +83,11 @@ export default {
   data() {
     return {
       leaderboardEntries: [
-        { id: 1, name: "User A", points: 100 },
-        { id: 2, name: "User B", points: 85 },
-        { id: 3, name: "User C", points: 75 },
-        { id: 4, name: "User D", points: 65 },
-        { id: 5, name: "User E", points: 50 },
+        { id: 1, name: "User A", points: 100, members: ["Member 1", "Member 2"] },
+        { id: 2, name: "User B", points: 85, members: ["Member 3", "Member 4"] },
+        { id: 3, name: "User C", points: 75, members: ["Member 5", "Member 6"] },
+        { id: 4, name: "User D", points: 65, members: ["Member 7", "Member 8"] },
+        { id: 5, name: "User E", points: 50, members: ["Member 9", "Member 10"] },
       ],
     };
   },
@@ -140,4 +145,26 @@ export default {
   width: 96%;
   
 }
+.leaderboard-card {
+  margin-bottom: 16px;
+}
+
+.leaderboard-card .v-card__title {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.leaderboard-card .highlighted {
+  background-color: #f0f0f0; /* Background color for highlighted entry */
+}
+
+.members {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.members li {
+  font-size: 14px;
+  margin-bottom: 5px;}
 </style>
