@@ -2,9 +2,21 @@ from django.db import models,migrations
 from django.contrib.auth.models import User
 from django.utils import timezone
 
+# class Leaderboard(models.Model):
+#     user = models.ForeignKey(User, on_delete=models.CASCADE)
+#     score = models.IntegerField()
+#     membersname = models.ManyToManyField(User.name, related_name='member_leaderboards')
+#     highlighted = models.BooleanField(default=True)
+#     team=models.CharField(max_length=20,null=False)
+
 class Leaderboard(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     score = models.IntegerField()
+    membersname = models.ManyToManyField(User, related_name='member_leaderboards')
+    highlighted = models.BooleanField(default=True)
+    team = models.CharField(max_length=20, null=False)
+
+
 
 class ActiveUser(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

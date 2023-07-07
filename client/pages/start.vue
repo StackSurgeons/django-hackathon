@@ -140,6 +140,7 @@ export default {
   methods: {
     async fetchData() {
       try {
+<<<<<<< HEAD
         const response = await axios.get(
           "http://127.0.0.1:8000/company/dashboard/"
         );
@@ -149,6 +150,11 @@ export default {
         this.leaderboard = response.data.Leaderbooard;
         this.rewards = response.data.reward;
         console.log(response.data.active_user);
+=======
+        const response = await axios.get("http://127.0.0.1:8000/company/dashboard/");
+        this.leaderboardEntries = response.data;
+        console.log(response.data)
+>>>>>>> ca8d7db8249835e357d49d7dd1c49d9d566a58ba
       } catch (error) {
         console.error(error);
       }
