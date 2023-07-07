@@ -26,5 +26,5 @@ class RewardAdmin(admin.ModelAdmin):
 
 @admin.register(Leaderboard)
 class leaderboardadmin(admin.ModelAdmin):
-    list_display=["id","user",'score']
+    list_display=["id","user",'score',"team"]
 
