@@ -25,7 +25,7 @@ def company_dashboard(request):
             'past_hackathons': past_hackathons_serializer.data,
             "Leaderbooard":leaderboardserializer.data,
             'reward': rewardserializer.data,
-            "active user":activeUserserializer.data
+            "active_user":activeUserserializer.data
     }
     return Response(data)
 
@@ -50,7 +50,7 @@ def hacker_dashboard(request):
             'past_hackathons': past_hackathons_serializer.data,
             "Leaderbooard":leaderboardserializer.data,
             'reward': rewardserializer.data,
-            "active user":activeUserserializer.data
+            "active_user":activeUserserializer.data
     }
     return Response(data)
 

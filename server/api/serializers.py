@@ -1,11 +1,19 @@
 from rest_framework import serializers
 from .models import Leaderboard, Reward, ActiveUser, Hackathon
 
+
+class MemberUsernameField(serializers.RelatedField):
+    def to_representation(self, value):
+        return value.username
+    
 class LeaderboardSerializer(serializers.ModelSerializer):
     user = serializers.ReadOnlyField(source='user.username')
+    membersname = MemberUsernameField(many=True, read_only=True)
+
     class Meta:
         model = Leaderboard
         fields = '__all__'
+    
 
 class RewardSerializer(serializers.ModelSerializer):
     user = serializers.ReadOnlyField(source='user.username')
